@@ -26,10 +26,10 @@ mongoose.connect(process.env.DB_PATH, { useNewUrlParser: true }, (err) => {
 
 // Routing
 
+app.use('/api/students', require('./routes/student_routes'))
+
 app.get('/', (req, res) => res.json({
     msg: 'Testing the root get request'
 }))
-
-app.use('/api/students', require('./routes/student_routes'))
 
 app.listen(process.env.PORT || 4000, () => console.log('Listening on http://localhost:4000'))
