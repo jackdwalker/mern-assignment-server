@@ -11,8 +11,6 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    const name = req.body.name
-    const email = req.body.email
     let newStudent = new StudentModel({
         name: req.body.name,
         email: req.body.email
