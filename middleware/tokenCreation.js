@@ -45,11 +45,30 @@ const signJwtForUser = (req, res) => {
         }
     )
     res.cookie('token', token, { expires: new Date(Date.now() + 86400000), path: '/', httpOnly: true })
-    .status(200).send({ token: token});
+    .status(200).send({ token: token });
+}
+
+// Generate an already expired token as a way of destroying session
+
+const destroySession = (req, res) => {
+    const token = JWT.sign(
+        // Payload
+        {},
+        // Secret
+        secret,
+        // Config
+        {
+            algorithm,
+            expiresIn: '24h'
+        }
+    )
+    res.cookie('token', token, { expires: new Date(Date.now() - 86400000), path: '/', httpOnly: true })
+    .status(200).send('Successful logout');
 }
 
 module.exports = {
     signJwtForUser,
+    destroySession,
     initializePassport: passport.initialize(),
     // Login through Passport without a session
     login: passport.authenticate('local', { session: false }),

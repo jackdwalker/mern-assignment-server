@@ -25,10 +25,6 @@ const StudentSchema = new Schema ({
         type: String,
         default: ''
     },
-    email: {
-        type: String,
-        required: true
-    },
     graduated: Date,
     hireable: {
         type: Boolean,
