@@ -18,15 +18,16 @@ router.post('/register', (req, res) => {
         avatarURL: req.body.avatarURL,
         techStack: req.body.techStack,
         websiteURL: req.body.websiteURL,
+        linkedInURL: req.body.linkedInURL,
         twitterURL: req.body.twitterURL,
         githubURL: req.body.githubURL,
-        graduated: req.body.graduated,
         hireable: req.body.hireable,
         location: req.body.location,
         fieldOfInterest: req.body.fieldOfInterest,
         seeking: req.body.seeking,
         bio: req.body.bio
     })
+    newStudent.save()
 
     const newUser = new UserModel ({
         email: req.body.email,
@@ -43,7 +44,6 @@ router.post('/register', (req, res) => {
         })
     })
 
-    newStudent.save()
 
 }, signJwtForUser)
 

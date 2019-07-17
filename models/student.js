@@ -12,11 +12,14 @@ const StudentSchema = new Schema ({
         default: ''
     },
     techStack: {
-        type: String,
-        enum: ['Ruby', 'HTML', 'CSS', 'Javascript', 'Mongo', 'Express', 'React', 'Node'],
-        default: 'Ruby'
+        type: Array,
+        default: []
     },
     websiteURL: String,
+    linkedInURL: {
+        type: String,
+        default: ''
+    },
     twitterURL: {
         type: String,
         default: ''
@@ -27,22 +30,19 @@ const StudentSchema = new Schema ({
     },
     graduated: Date,
     hireable: {
-        type: Boolean,
+        type: String,
         default: false
     },
     location: {
         type: String,
-        enum: ['Brisbane', 'Sydney', 'Melbourne']
     },
     fieldOfInterest: {
         type: String,
-        enum: ['Front-end', 'Back-end', 'I like both'],
         default: 'I like both'
     },
     seeking: {
-        type: String,
-        enum: ['Remote Full-Time', 'Remote Part-Time', 'Local Full-Time', 'Local Part-Time', 'Internship'],
-        default: 'Internship'
+        type: Array,
+        default: []
     },
     bio: String
 })
