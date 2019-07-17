@@ -44,7 +44,7 @@ const signJwtForUser = (req, res) => {
             expiresIn: '24h'
         }
     )
-    res.cookie('token', token, { expires: new Date(Date.now() + 86400000), path: '/', httpOnly: true })
+    res.cookie('token', token, { domain: process.env.COOKIE_DOMAIN || 'localhost', expires: new Date(Date.now() + 86400000), path: '/', httpOnly: true })
     .status(200).send({ token: token });
 }
 
@@ -62,7 +62,7 @@ const destroySession = (req, res) => {
             expiresIn: '24h'
         }
     )
-    res.cookie('token', token, { expires: new Date(Date.now() - 86400000), path: '/', httpOnly: true })
+    res.cookie('token', token, { domain: process.env.COOKIE_DOMAIN || 'localhost', expires: new Date(Date.now() - 86400000), path: '/', httpOnly: true })
     .status(200).send('Successful logout');
 }
 
