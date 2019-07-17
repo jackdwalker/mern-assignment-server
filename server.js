@@ -24,7 +24,7 @@ app.use(cookieParser())
 
 // Initialising MongoDB connection
 
-mongoose.connect(process.env.TEST_DB_PATH, { useNewUrlParser: true }, (err) => {
+mongoose.connect(process.env.DB_PATH, { useNewUrlParser: true }, (err) => {
     if (err) {
         console.log('Error connecting to database', err)
     } else {
