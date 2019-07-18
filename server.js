@@ -19,7 +19,7 @@ const app = express()
 app.use(morgan('dev')) // Better server logs
 app.use(bodyParser.json()) // Parse JSON
 app.use(initializePassport)
-app.use(cors({credentials: true, origin: 'linkedout.netlify.com'})) // Allow CORS
+app.use(cors({credentials: true, origin: true})) // Allow CORS
 app.use(cookieParser())
 
 // Initialising MongoDB connection
