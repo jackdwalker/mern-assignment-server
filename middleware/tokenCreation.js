@@ -44,7 +44,7 @@ const signJwtForUser = (req, res) => {
             expiresIn: '24h'
         }
     )
-    res.cookie('token', token, { domain: ".linkedout.netlify.com", expires: new Date(Date.now() + 86400000), httpOnly: true })
+    res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true })
     .status(200).send({ token: token });
 }
 
