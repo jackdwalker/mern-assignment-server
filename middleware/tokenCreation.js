@@ -64,9 +64,9 @@ const signJwtForSignUp = (req, res) => {
             algorithm,
             expiresIn: '24h'
         }
-        res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true })
-        .status(200).send({id: StudentModel.find({}).sort({$natural:-1}).limit(1)._id})
     )
+    res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true })
+    .status(200).send({id: StudentModel.find({}).sort({$natural:-1}).limit(1)._id})
 }
 
 // Generate an already expired token as a way of destroying session
