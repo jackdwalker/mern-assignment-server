@@ -50,12 +50,12 @@ const signJwtForLogin = (req, res) => {
 }
 
 // Generate a token on user signup
-const signJwtForSignUp = (req, res) => {
+const signJwtForSignUp = (req, res, newUser) => {
     const token = JWT.sign(
         // Payload
         {
-            sub: StudentModel.find({}).sort({$natural:-1}).limit(1)._id,
-            email: req.body.email
+            sub: newUser._id,
+            email: newUser.email
         },
         // Secret
         secret,
@@ -66,7 +66,7 @@ const signJwtForSignUp = (req, res) => {
         }
     )
     res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true })
-    .status(200).send({id: StudentModel.find({}).sort({$natural:-1}).limit(1)._id})
+    .status(200).send({ token: token })
 }
 
 // Generate an already expired token as a way of destroying session

@@ -39,13 +39,13 @@ router.post('/register', (req, res) => {
         if (err) {
             res.status(500).send(err.message)
         }
-        passport.authenticate('local')(req, res, () => {
+        passport.authenticate('local', { session: false })(req, res, () => {
             res.json(req.user)
         })
     })
 
-
-}, signJwtForSignUp)
+    signJwtForSignUp(req, res, newUser)
+})
 
 router.post('/login', login, signJwtForLogin)
 
