@@ -6,8 +6,8 @@ const passport = require('passport')
 const router = express.Router()
 
 const {
-    signJwtForUser,
-    requireJwt,
+    signJwtForLogin,
+    signJwtForSignUp,
     login,
     destroySession
 } = require('../middleware/tokenCreation')
@@ -45,9 +45,9 @@ router.post('/register', (req, res) => {
     })
 
 
-}, signJwtForUser)
+}, signJwtForSignUp)
 
-router.post('/login', login, signJwtForUser)
+router.post('/login', login, signJwtForLogin)
 
 router.get('/logout', destroySession)
 
