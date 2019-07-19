@@ -6,8 +6,8 @@ const passport = require('passport')
 const router = express.Router()
 
 const {
-    signJwtForUser,
-    requireJwt,
+    signJwtForLogin,
+    signJwtForSignUp,
     login,
     destroySession
 } = require('../middleware/tokenCreation')
@@ -39,15 +39,15 @@ router.post('/register', (req, res) => {
         if (err) {
             res.status(500).send(err.message)
         }
-        passport.authenticate('local')(req, res, () => {
+        passport.authenticate('local', { session: false })(req, res, () => {
             res.json(req.user)
         })
     })
 
+    signJwtForSignUp(req, res, newUser)
+})
 
-}, signJwtForUser)
-
-router.post('/login', login, signJwtForUser)
+router.post('/login', login, signJwtForLogin)
 
 router.get('/logout', destroySession)
 
