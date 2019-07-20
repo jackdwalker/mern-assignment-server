@@ -11,7 +11,10 @@ const StudentSchema = new Schema ({
         type: Array,
         default: []
     },
-    websiteURL: String,
+    websiteURL: {
+        type: String,
+        default: ''
+    },
     linkedInURL: {
         type: String,
         default: ''
@@ -39,7 +42,10 @@ const StudentSchema = new Schema ({
         type: Array,
         default: []
     },
-    bio: String,
+    bio: {
+        type: String,
+        default: ''
+    },
     gravatar: {
         type: String,
         default: ''
