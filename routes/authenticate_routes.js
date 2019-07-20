@@ -4,6 +4,7 @@ const { StudentModel } = require('../models/student')
 const { withAuth } = require('../middleware/withAuth')
 const passport = require('passport')
 const router = express.Router()
+const md5 = require('js-md5')
 
 const {
     signJwtForLogin,
@@ -25,7 +26,8 @@ router.post('/register', (req, res) => {
         location: req.body.location,
         fieldOfInterest: req.body.fieldOfInterest,
         seeking: req.body.seeking,
-        bio: req.body.bio
+        bio: req.body.bio,
+        gravatar: md5('req.body.email')
     })
     newStudent.save()
 

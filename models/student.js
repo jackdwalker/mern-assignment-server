@@ -44,7 +44,8 @@ const StudentSchema = new Schema ({
         type: Array,
         default: []
     },
-    bio: String
+    bio: String,
+    gravatar: String
 })
 
 const StudentModel = mongoose.model('Student', StudentSchema)
