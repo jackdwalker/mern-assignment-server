@@ -7,10 +7,6 @@ const StudentSchema = new Schema ({
         type: String,
         required: true
     },
-    avatarURL: {
-        type: String,
-        default: ''
-    },
     techStack: {
         type: Array,
         default: []
@@ -28,7 +24,6 @@ const StudentSchema = new Schema ({
         type: String,
         default: ''
     },
-    graduated: Date,
     hireable: {
         type: String,
         default: false
@@ -45,7 +40,10 @@ const StudentSchema = new Schema ({
         default: []
     },
     bio: String,
-    gravatar: String
+    gravatar: {
+        type: String,
+        default: ''
+    }
 })
 
 const StudentModel = mongoose.model('Student', StudentSchema)
