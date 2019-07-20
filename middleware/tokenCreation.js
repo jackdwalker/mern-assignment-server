@@ -2,7 +2,6 @@ const passport = require('passport')
 const PassportJwt = require('passport-jwt')
 const JWT = require('jsonwebtoken')
 const { UserModel } = require('../models/user')
-const { StudentModel } = require('../models/student')
 
 const algorithm = 'HS256'
 const secret = 'goodsecret'

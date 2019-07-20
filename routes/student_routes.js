@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { StudentModel } = require('../models/student')
+const { UserModel } = require('../models/user')
 
 router.get('/', (req, res) => {
     StudentModel.find()
@@ -23,5 +24,14 @@ router.post('/', (req, res) => {
     res.sendStatus(200)
 })
 
+router.get('/all-students', (req, res) => {
+    StudentModel.find().limit(50)
+        .then((students) => {
+            res.send(students)
+        })
+        .catch(err => res.status(500).send =({
+            error: err.message
+        }))
+})
 
 module.exports = router
