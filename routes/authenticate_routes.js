@@ -27,7 +27,8 @@ router.post('/register', (req, res) => {
         fieldOfInterest: req.body.fieldOfInterest,
         seeking: req.body.seeking,
         bio: req.body.bio,
-        gravatar: md5(req.body.email)
+        gravatar: md5(req.body.email),
+        contactEmail: req.body.email
     })
     newStudent.save()
 
