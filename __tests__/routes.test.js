@@ -4,6 +4,7 @@ const student_routes = require ('../routes/student_routes')
 const app = require ('../server')
 
 // testing DB Connection
+describe
 
 
 // testing the root path 
