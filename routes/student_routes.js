@@ -31,7 +31,7 @@ router.get('/profile/:id', (req, res) => {
 
 router.get('/edit-profile/', function(req, res) {
     const token = req.cookies.token
-    const secret = 'goodsecret'
+    const secret = process.env.JWT_SECRET
 
     if (!token) {
         res.status(401).send('Unauthorized: No token provided') 

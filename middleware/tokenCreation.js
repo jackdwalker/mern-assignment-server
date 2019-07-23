@@ -4,7 +4,7 @@ const JWT = require('jsonwebtoken')
 const { UserModel } = require('../models/user')
 
 const algorithm = 'HS256'
-const secret = 'goodsecret'
+const secret = process.env.JWT_SECRET
 
 // Use the UserModel strategy (local-mongoose) for email and password
 passport.use(UserModel.createStrategy())
