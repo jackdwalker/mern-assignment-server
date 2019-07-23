@@ -34,7 +34,8 @@ const signJwtForLogin = (req, res) => {
         // Payload
         {
             sub: req.user._id.toString(),
-            email: req.user.email
+            email: req.user.email,
+            student_id: req.user.student
         },
         // Secret
         secret,
