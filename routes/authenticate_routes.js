@@ -1,7 +1,6 @@
 const express = require('express')
 const { UserModel } = require('../models/user')
 const { StudentModel } = require('../models/student')
-const { withAuth } = require('../middleware/withAuth')
 const passport = require('passport')
 const router = express.Router()
 const md5 = require('js-md5')
