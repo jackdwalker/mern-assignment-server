@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const PassportJWT = require('passport-jwt')
 const secret = 'goodsecret'
 
 const withAuth = function(req, res, next) {
