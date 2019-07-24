@@ -4,7 +4,7 @@ const student_routes = require ('../routes/student_routes')
 const app = require ('../server')
 
 // testing DB Connection
-describe
+describe 
 
 
 // testing the root path 
@@ -16,6 +16,14 @@ describe('test the root path get request', () => {
     })
 
 })
+
+// testing the authenticate_routes
+describe('it should return a 200 for a route that sends back an authorised token',() => {
+    test('it should return a 200 for a authorised token', async () => {
+        const response = await request(app).get( )
+    }
+})
+
 
 
 // 
