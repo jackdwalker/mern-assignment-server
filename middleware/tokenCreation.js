@@ -69,9 +69,35 @@ const signJwtForSignUp = (req, res, newUser) => {
 
 // Generate an already expired token as a way of destroying session
 
-const destroySession = (req, res, secret, algorithm) => {
+const destroySession = (req, res) => {
     const token = JWT.sign(
         // Payload - the encrypted contents that will be readable upon verification/decryption
+        // The payload is empty as this token will be sent having already expired, so it won't
+        // ever actually exist in the browser.
+        {},
+        // Secret - a secret phrase/string that will be used to encrypt the token
+        secret,
+        // Config - defining the expiring date of this JWT and the algorithm used for encryption
+        {
+            algorithm,
+            expiresIn: '24h'
+        }
+    )
+    // Sending the newly generated JWT in response as a cookie, calling it 'token' this is the name
+    // the cookie will be stored as in the browser. This cookie will expire from the browser in 
+    // immediately upon hitting the browser, as the expiry day is set to a time before Date.now(). 
+    // This will work for any amount of time before now (86400000 here is arbitrary). Setting httpOnly 
+    // to true means that Javascript cannot be used to modify the cookie, in the event it is intercepted 
+    // before it hits the browser, where a malicious actor could change the expiry date and have a valid token.
+    res.cookie('token', token, { expires: new Date(Date.now() - 86400000), httpOnly: true })
+    .status(200).send('Successful logout');
+}
+
+
+// Same as the destroySession method, but takes additional params as is needed to properly call the function
+// rather than use it directly as a middleware
+const deleteSession = (req, res, secret, algorithm) => {
+    const token = JWT.sign(
         // The payload is empty as this token will be sent having already expired, so it won't
         // ever actually exist in the browser.
         {},
@@ -97,7 +123,9 @@ module.exports = {
     signJwtForLogin,
     signJwtForSignUp,
     destroySession,
+    deleteSession,
     initializePassport: passport.initialize(),
-    // Login through Passport without a session
+    // Login through Passport without a session, we don't need a session
+    // as the cookie acts as a placeholder for the session
     login: passport.authenticate('local', { session: false }),
 }

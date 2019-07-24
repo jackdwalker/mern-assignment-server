@@ -4,7 +4,7 @@ const { StudentModel } = require('../models/student')
 const { UserModel } = require('../models/user')
 const withAuth = require('../middleware/withAuth')
 const findStudentFromToken = require('../middleware/findStudentFromToken')
-const { destroySession } = require('../middleware/tokenCreation')
+const { deleteSession } = require('../middleware/tokenCreation')
 const secret = process.env.JWT_SECRET
 const algorithm = 'HS256'
 
@@ -124,7 +124,7 @@ router.post('/delete-profile', withAuth, function(req, res) {
             // On success send an destroy the session of the user deleting 
             // their account
             .then(result => {
-                destroySession(req, res, secret, algorithm)
+                deleteSession(req, res, secret, algorithm)
             })
             // If an error occurs send a Server Error HTTP response, and
             // the error message.
