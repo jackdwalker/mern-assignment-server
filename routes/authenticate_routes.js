@@ -65,15 +65,17 @@ router.post('/register', (req, res) => {
         // If no errors occur in the registration process, authenticate this 
         // user
         passport.authenticate('local', { session: false })(req, res, () => {
-            res.json(req.user)
+             // Signs a JWT for the new user, sending them the token as a cookie in
+            // response to a successful sign-up. This middleware must be called inside
+            // of this callback to have access to the newUser variable. Using it as
+            // a regular middleware would put the newUser variable out of scope.
+            signJwtForSignUp(req, res, newUser)
         })
     })
+       
 
-    // Signs a JWT for the new user, sending them the token as a cookie in
-    // response to a successful sign-up. This middleware must be called inside
-    // of this callback to have access to the newUser variable. Using it as
-    // a regular middleware would put the newUser variable out of scope.
-    signJwtForSignUp(req, res, newUser)
+   
+    
 })
 
 // The API route to login, authenticating the credentials sent in the request

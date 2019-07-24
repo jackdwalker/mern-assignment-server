@@ -12,7 +12,7 @@ const withAuth = function(req, res, next) {
         // If no 'token' cookie is found in the request headers send an Unauthorised HTTP response
         res.status(401).send('Unauthorized: No token provided') 
     } else {
-        jwt.verify(token, secret, function(err, decoded) {i
+        jwt.verify(token, secret, function(err, decoded) {
             // If there is some error in the verification of the token e.g. the secret
             // used to encrypt the token was not the secret we use in generating tokens
             // it must be a dodgy token, so send an Unauthorised HTTP response

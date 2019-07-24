@@ -4,6 +4,9 @@ const { StudentModel } = require('../models/student')
 const { UserModel } = require('../models/user')
 const withAuth = require('../middleware/withAuth')
 const findStudentFromToken = require('../middleware/findStudentFromToken')
+const { deleteSession } = require('../middleware/tokenCreation')
+const secret = process.env.JWT_SECRET
+const algorithm = 'HS256'
 
 // The API route to collect the first 50 registered students information.
 // As we do not have pagination set-up/specified as part of our MVP,
@@ -118,19 +121,16 @@ router.post('/delete-profile', withAuth, function(req, res) {
         UserModel.findOneAndDelete({
             student: req.body._id
         })
-        // On success send an OK HTTP response
-        .then(result => {
-            res.sendStatus(200) 
-        })
-        // If an error occurs send a Server Error HTTP response, and
-        // the error message.
-        .catch(err => {
-           res.status(500).send(err)
-        })
-    })
-    // On success send an OK HTTP response
-    .then(result => {
-        res.sendStatus(200) 
+            // On success send an destroy the session of the user deleting 
+            // their account
+            .then(result => {
+                deleteSession(req, res, secret, algorithm)
+            })
+            // If an error occurs send a Server Error HTTP response, and
+            // the error message.
+            .catch(err => {
+            res.status(500).send(err)
+            })
     })
     // If an error occurs send a Server Error HTTP response, and
     // the error message.

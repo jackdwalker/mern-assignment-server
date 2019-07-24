@@ -29,19 +29,19 @@ const findStudentFromToken = function(req, res) {
                 // If the token is valid, check the user collection for an entry that has
                 // an email that matches the decrypted token payload email
                 UserModel.findOne({ email: decoded.email })
-                .then(user =>
-                    // Check the student field of the matching user which contains the ObjectID
-                    // of the student associated with that account, and find that student from
-                    // the student collection
-                    StudentModel.findOne({ _id: user.student })
-                        // If that student is found, send it in response
-                        .then(student => res.send(student))
-                        // A catch in the event that a user is found, but the student
-                        // associated with that user cannot be found
-                        .catch(err => res.status(500).send("Student for this user cannot be found, please contact site administrators"))
-                )
-                // A catch in the event that a user who has the decoded email cannot be found
-                .catch(err => res.status(500).send("User cannot be found, please contact site administrators"))
+                    .then(user =>
+                        // Check the student field of the matching user which contains the ObjectID
+                        // of the student associated with that account, and find that student from
+                        // the student collection
+                        StudentModel.findOne({ _id: user.student })
+                            // If that student is found, send it in response
+                            .then(student => res.send(student))
+                            // A catch in the event that a user is found, but the student
+                            // associated with that user cannot be found
+                            .catch(err => res.status(500).send("Student for this user cannot be found, please contact site administrators"))
+                    )
+                    // A catch in the event that a user who has the decoded email cannot be found
+                    .catch(err => res.status(500).send("User cannot be found, please contact site administrators"))
             }
         })
     }

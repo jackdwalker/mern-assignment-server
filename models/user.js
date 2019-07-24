@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
 })
 
 // Telling passport to use email rather that username for authentication.
-UserSchema.plugin(passportLocalMongoose, { usernameField: 'email' })
+UserSchema.plugin(passportLocalMongoose, { usernameField: 'email', usernameUnique: true } )
 
 // Creating a UserModel variable that will be exported, allowing for
 // searches to be performed on this collection in elsewhere in the back-end
