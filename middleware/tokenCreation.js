@@ -1,70 +1,68 @@
 const passport = require('passport')
-const PassportJwt = require('passport-jwt')
 const JWT = require('jsonwebtoken')
 const { UserModel } = require('../models/user')
 
-const algorithm = 'HS256'
-const secret = process.env.JWT_SECRET
+const algorithm = 'HS256' // Setting the JWT encryption algorithm (HMAC SHA-256)
+const secret = process.env.JWT_SECRET // Designating the location of the secret used for JWT encryption
 
-// Use the UserModel strategy (local-mongoose) for email and password
+// Use the UserModel strategy (local-mongoose) for email and password authentication
 passport.use(UserModel.createStrategy())
 
-// // Generate JWT for every request
-// passport.use(new PassportJwt.Strategy({
-//     // Telling Passport where the JWT will be in the request
-//     jwtFromRequest: PassportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),
-//     secretOrKey: secret,
-//     algorithms: [algorithm]
-// }, async (payload, done) => { 
-//         // We use done as this is a middleware, and it will tell app.js to move on to the next middleware
-//         const user = await UserModel.findById(payload.sub)
-//         if (user) {
-//             // Copy token to user so Passport can find it
-//             user.token = payload
-//             done(null, user)
-//         } else {
-//             done('User not found', false)
-//         }
-//     }
-// ))
-
-// Generate a token on user login
+// Generate JWT and sending it to the client as a cookie on login
 const signJwtForLogin = (req, res) => {
+    // Declaring a token variable which will be a JWT
     const token = JWT.sign(
-        // Payload
+        // Payload - the encrypted contents that will be readable upon verification/decryption
         {
+            // req.user is an object provided upon authentication by Passport. As local auth
+            // happens prior to this middleware being called. This function requires local auth
+            // to have happened to be able to generate a token.
             sub: req.user._id.toString(),
             email: req.user.email,
             student_id: req.user.student
         },
-        // Secret
+        // Secret - a secret phrase/string that will be used to encrypt the token
         secret,
-        // Config
+        // Config - defining the expiring date of this JWT and the algorithm used for encryption
         {
             algorithm,
             expiresIn: '24h'
         }
     )
+    // Sending the newly generated JWT in response as a cookie, calling it 'token' this is the name
+    // the cookie will be stored as in the browser. This cookie will expire from the browser in 
+    // 24 hours from the date it was sent (86400000 seconds). Setting httpOnly to true means that
+    // Javascript cannot be used to modify the cookie, making it secure against Cross-Site Scripting
+    // Attacks
     res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true })
     .status(200).send({ token: token });
 }
 
-// Generate a token on user signup
+// Generate JWT and sending it to the client as a cookie on sign-up
 const signJwtForSignUp = (req, res, newUser) => {
+    // Declaring a token variable which will be a JWT
     const token = JWT.sign(
-        // Payload
+        // Payload - the encrypted contents that will be readable upon verification/decryption
         {
+            // newUser here will be the newly created UserModel entry defined within the sign-up
+            // POST request from the client
             sub: newUser._id,
-            email: newUser.email
+            email: newUser.email,
+            student_id: newUser.student
         },
-        // Secret
+        // Secret - a secret phrase/string that will be used to encrypt the token
         secret,
-        // Config
+        // Config - defining the expiring date of this JWT and the algorithm used for encryption        
         {
             algorithm,
             expiresIn: '24h'
         }
     )
+    // Sending the newly generated JWT in response as a cookie, calling it 'token' this is the name
+    // the cookie will be stored as in the browser. This cookie will expire from the browser in 
+    // 24 hours from the date it was sent (86400000 seconds). Setting httpOnly to true means that
+    // Javascript cannot be used to modify the cookie, making it secure against Cross-Site Scripting
+    // Attacks
     res.cookie('token', token, { expires: new Date(Date.now() + 86400000), httpOnly: true })
     .status(200).send({ token: token })
 }
@@ -73,16 +71,24 @@ const signJwtForSignUp = (req, res, newUser) => {
 
 const destroySession = (req, res) => {
     const token = JWT.sign(
-        // Payload
+        // Payload - the encrypted contents that will be readable upon verification/decryption
+        // The payload is empty as this token will be sent having already expired, so it won't
+        // ever actually exist in the browser.
         {},
-        // Secret
+        // Secret - a secret phrase/string that will be used to encrypt the token
         secret,
-        // Config
+        // Config - defining the expiring date of this JWT and the algorithm used for encryption
         {
             algorithm,
             expiresIn: '24h'
         }
     )
+    // Sending the newly generated JWT in response as a cookie, calling it 'token' this is the name
+    // the cookie will be stored as in the browser. This cookie will expire from the browser in 
+    // immediately upon hitting the browser, as the expiry day is set to a time before Date.now(). 
+    // This will work for any amount of time before now (86400000 here is arbitrary). Setting httpOnly 
+    // to true means that Javascript cannot be used to modify the cookie, in the event it is intercepted 
+    // before it hits the browser, where a malicious actor could change the expiry date and have a valid token.
     res.cookie('token', token, { expires: new Date(Date.now() - 86400000), httpOnly: true })
     .status(200).send('Successful logout');
 }
@@ -94,5 +100,4 @@ module.exports = {
     initializePassport: passport.initialize(),
     // Login through Passport without a session
     login: passport.authenticate('local', { session: false }),
-    // requireJwt: passport.authenticate('jwt', { session: false })
 }
