@@ -4,6 +4,7 @@ const { StudentModel } = require('../models/student')
 const { UserModel } = require('../models/user')
 const jwt = require('jsonwebtoken')
 const withAuth = require('../middleware/withAuth')
+const findStudentFromToken = require('../middleware/findStudentFromToken')
 
 router.get('/all-students', (req, res) => {
     StudentModel.find().limit(50)
@@ -29,28 +30,7 @@ router.get('/profile/:id', (req, res) => {
         }))
 })
 
-router.get('/edit-profile/', function(req, res) {
-    const token = req.cookies.token
-    const secret = process.env.JWT_SECRET
-
-    if (!token) {
-        res.status(401).send('Unauthorized: No token provided') 
-    } else {
-        jwt.verify(token, secret, function(err, decoded) {
-            if(err) {
-                res.status(401).send('Unauthorized: Invalid token')
-            } else {
-                UserModel.findOne({ email: decoded.email })
-                .then(user =>
-                    StudentModel.findOne({ _id: user.student })
-                        .then(student => res.send(student))
-                        .catch(err => res.status(500).send(err.message))
-                )
-                .catch(err => res.status(500).send(err.message))
-            }
-        })
-    }
-})
+router.get('/edit-profile/', findStudentFromToken)
 
 router.post('/update-profile', withAuth, function(req, res) {
     StudentModel.findOneAndUpdate(

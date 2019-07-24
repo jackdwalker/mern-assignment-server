@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken')
+const { StudentModel } = require('../models/student')
+const { UserModel } = require('../models/user')
 const secret = process.env.JWT_SECRET
 
-const findStudentFromToken = function(req, res, next) {
+const findStudentFromToken = function(req, res) {
     const token = req.cookies.token
 
     if (!token) {
