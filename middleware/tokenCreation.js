@@ -69,7 +69,7 @@ const signJwtForSignUp = (req, res, newUser) => {
 
 // Generate an already expired token as a way of destroying session
 
-const destroySession = (req, res) => {
+const destroySession = (req, res, secret, algorithm) => {
     const token = JWT.sign(
         // Payload - the encrypted contents that will be readable upon verification/decryption
         // The payload is empty as this token will be sent having already expired, so it won't
