@@ -31,12 +31,11 @@ router.get('/profile/:id', (req, res) => {
 
 router.get('/edit-profile/', function(req, res) {
     const token = req.cookies.token
-    const secret = process.env.JWT_SECRET
 
     if (!token) {
         res.status(401).send('Unauthorized: No token provided') 
     } else {
-        jwt.verify(token, secret, function(err, decoded) {
+        jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
             if(err) {
                 res.status(401).send('Unauthorized: Invalid token')
             } else {
@@ -88,7 +87,7 @@ router.post('/delete-profile', withAuth, function(req, res) {
             student: req.body._id
         })
         .then(result => {
-            res.sendStatus(200) 
+            res.send('ok').status(200)
         })
         .catch(err => {
            res.status(500).send(err)

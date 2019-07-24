@@ -28,8 +28,9 @@ router.post('/register', (req, res) => {
         bio: req.body.bio,
         gravatar: md5(req.body.email)
     })
-    newStudent.save()
 
+    newStudent.save()
+    
     const newUser = new UserModel ({
         email: req.body.email,
         password: req.body.password,
@@ -46,6 +47,7 @@ router.post('/register', (req, res) => {
     })
 
     signJwtForSignUp(req, res, newUser)
+    
 })
 
 router.post('/login', login, signJwtForLogin)

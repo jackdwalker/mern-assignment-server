@@ -9,7 +9,7 @@ const withAuth = function(req, res, next) {
         res.status(401).send('Unauthorized: No token provided') 
     } else {
         jwt.verify(token, secret, function(err, decoded) {
-            if(err || decoded.student_id != req.body._id) {
+            if(err) {
                 res.status(401).send('Unauthorized: Invalid token')
             } else {
                 next()
