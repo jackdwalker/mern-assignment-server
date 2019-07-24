@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const { StudentModel } = require('../models/student')
 const { UserModel } = require('../models/user')
-const jwt = require('jsonwebtoken')
 const withAuth = require('../middleware/withAuth')
 const findStudentFromToken = require('../middleware/findStudentFromToken')
 
