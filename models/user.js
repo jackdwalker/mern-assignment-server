@@ -9,10 +9,10 @@ const UserSchema = new mongoose.Schema({
     // This stores the role of the User, and while not actually
     // used for any deployed User collection entries it was 
     // anticipated that in future iterations this field would be required
-    // to set administrator/guest priviledges.
+    // to set administrator/standard privileges.
     role: {
         type: String,
-        default: 'guest'
+        default: 'standard'
     },
     // The student that this User entry is associated with, stored as the
     // ObjectID for that user. In this iteration where the only types of
