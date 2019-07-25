@@ -11,7 +11,7 @@ const algorithm = 'HS256'
 // The API route to collect the first 50 registered students information.
 // As we do not have pagination set-up/specified as part of our MVP,
 // we decided to limit the amount of viewable profiles to 50, or anyone
-// could mass create user profiiles, and attempting to render browse profiles
+// could mass create user profiles, and attempting to render browse profiles
 // component could take an extremely long time to load/crash the front-end.
 router.get('/all-students', (req, res) => {
     // Finding students with no set parameters will return all students,
