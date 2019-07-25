@@ -20,7 +20,7 @@ describe('test the root path get request', () => {
 // testing the authenticate_routes
 describe('it should return a 200 for a route that sends back an authorised token',() => {
     test('it should return a 200 for a authorised token', async () => {
-        const response = await request(app).get( )
+        const response = await request(app).get()
     }
 })
 
